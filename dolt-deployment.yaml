@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dolt
+  labels:
+    app: dolt
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: dolt
+  template:
+    metadata:
+      labels:
+        app: dolt
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: iSCSI
+                operator: In
+                values:
+                - "true"
+              - key: tpu
+                operator: NotIn
+                values:
+                - "true"
+      containers:
+      - name: dolt
+        imagePullPolicy: "IfNotPresent"
+        image: dolthub/dolt:latest
+        args:
+          - sql-server
+          - --config
+          - /etc/dolt/server.yaml
+        ports:
+          - containerPort: 3307
+            name: mysql
+            protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: 3307
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 3307
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        volumeMounts:
+          - name: synology-iscsi-dolt
+            mountPath: /var/lib/dolt
+          - name: dolt-config
+            mountPath: /etc/dolt/server.yaml
+            subPath: server.yaml
+      volumes:
+       - name: synology-iscsi-dolt
+         persistentVolumeClaim:
+           claimName: synology-dolt
+       - name: dolt-config
+         configMap:
+           name: dolt-config

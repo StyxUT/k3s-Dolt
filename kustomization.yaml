@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - synology-iSCSI-dolt-pvc.yaml
+  - dolt-config-cm.yaml
+  - dolt-deployment.yaml
+  - dolt-svc.yaml
+secretGenerator:
+  - name: dolt-beads-password
+    files:
+      - BEADS_DOLT_PASSWORD=./secrets/beads_dolt_password.txt
+generatorOptions:
+  disableNameSuffixHash: true
