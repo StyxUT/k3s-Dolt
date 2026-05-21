@@ -46,12 +46,12 @@ spec:
           tcpSocket:
             port: 3307
           initialDelaySeconds: 10
-          periodSeconds: 10
+          periodSeconds: 120
         livenessProbe:
           tcpSocket:
             port: 3307
           initialDelaySeconds: 30
-          periodSeconds: 30
+          periodSeconds: 120
         volumeMounts:
           - name: synology-iscsi-dolt
             mountPath: /var/lib/dolt
