@@ -44,7 +44,7 @@ For a local project using beads server mode, use the node currently hosting the
 Dolt pod (`kubectl get pods -l app=dolt -o wide`) and NodePort `30307`:
 
 ```bash
-export BEADS_DOLT_SERVER_HOST=192.168.50.223 # replace with the current Dolt pod's node address
+export BEADS_DOLT_SERVER_HOST=192.168.50.221 # current pod host; update if the pod moves to worker-03
 export BEADS_DOLT_SERVER_PORT=30307
 export BEADS_DOLT_SERVER_USER=beads
 export BEADS_DOLT_PASSWORD="$(cat /var/Projects/k3s-Dolt/secrets/beads_dolt_password.txt)"
