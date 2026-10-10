@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: synology-dolt
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: synology-iscsi-storage
+  volumeMode: Filesystem
+  claimRef:
+    namespace: default
+    name: synology-dolt
+  csi:
+    driver: csi.san.synology.com
+    fsType: ext4
+    volumeHandle: 8abbbfab-c79c-4121-bbf2-e9a3e731d76f

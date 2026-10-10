@@ -7,6 +7,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  volumeName: synology-dolt
   storageClassName: synology-iscsi-storage
   resources:
     requests:

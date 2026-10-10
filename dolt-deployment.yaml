@@ -30,10 +30,20 @@ spec:
                 operator: NotIn
                 values:
                 - "true"
+              - key: egress.network/internet
+                operator: NotIn
+                values:
+                - "true"
+              - key: kubernetes.io/hostname
+                operator: NotIn
+                values:
+                - k3s-worker-02
+      imagePullSecrets:
+      - name: image-registry-credentials
       containers:
       - name: dolt
         imagePullPolicy: "IfNotPresent"
-        image: dolthub/dolt:latest
+        image: 192.168.50.222:32050/dolthub/dolt@sha256:8a822610f9fffab0e347a9d4a0cce2a53444e7e6fb459a684b6b9fa721dfcbb4
         args:
           - sql-server
           - --config
@@ -42,16 +52,26 @@ spec:
           - containerPort: 3307
             name: mysql
             protocol: TCP
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: "2"
+            memory: 2Gi
+        startupProbe:
+          tcpSocket:
+            port: 3307
+          periodSeconds: 10
+          failureThreshold: 30
         readinessProbe:
           tcpSocket:
             port: 3307
-          initialDelaySeconds: 10
-          periodSeconds: 120
+          periodSeconds: 5
         livenessProbe:
           tcpSocket:
             port: 3307
-          initialDelaySeconds: 30
-          periodSeconds: 120
+          periodSeconds: 10
         volumeMounts:
           - name: synology-iscsi-dolt
             mountPath: /var/lib/dolt

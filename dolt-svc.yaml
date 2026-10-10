@@ -6,17 +6,13 @@ metadata:
   labels:
     app: dolt
 spec:
-  type: ClusterIP
+  type: NodePort
+  externalTrafficPolicy: Local
   ports:
     - port: 3307
       targetPort: 3307
       protocol: TCP
       name: mysql
+      nodePort: 30307
   selector:
     app: dolt
-  externalIPs:
-    - 192.168.0.211
-    - 192.168.0.221
-    - 192.168.0.222
-    - 192.168.0.223
-    - 192.168.0.224
