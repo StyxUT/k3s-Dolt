@@ -43,7 +43,7 @@ spec:
       containers:
       - name: dolt
         imagePullPolicy: "IfNotPresent"
-        image: 192.168.50.222:32050/dolthub/dolt@sha256:8a822610f9fffab0e347a9d4a0cce2a53444e7e6fb459a684b6b9fa721dfcbb4
+        image: 192.168.50.222:32050/dolthub/dolt@sha256:6211bd8ba9f33898cc518d1ddeb3058f6818d733c86db54f1873118e5fd8cb94
         args:
           - sql-server
           - --config
